@@ -1,0 +1,26 @@
+
+luis.alejandro.quiroz@gmail.com
+
+ingkilo@gmail.com
+
+jr.reyes289@gmail.com
+
+jabonillab@unal.edu.co
+
+Edson.gomez@gmail.com
+
+
+Indicadores del estado. Problematica del estado.
+
+1. Revisar datos de la contratacion publica en Colombia disponibles en la plataforma CECOP.
+
+	Identificamos identificadores como contratacion publica, registro de cabildeo, registro de compañias.
+
+ Buscar datos adicionales que puedan ser relacionados (por ejemplo de niveles  de corrupcion en la secretaria de transparencia).
+
+2. Fue posible descargar la base de datos y hacer una primera revision de la informacion.
+
+
+3. No tenemos un listado de la existencia de contratos de empresas del estado para el año de estado.
+
+
