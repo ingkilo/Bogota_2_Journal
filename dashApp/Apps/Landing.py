@@ -35,11 +35,11 @@ layout = html.Div(children=[
     html.Br(),
     html.Br(),
     html.Br(), 
-    html.H4("Landing"),
+    html.H4("Landing:"),
     html.Div([
        
     
-    html.Div([html.H4("Selector de Fecha"),
+    html.Div([html.H4("Selector de Fecha:"),
         dcc.DatePickerRange(
         id='my-date-picker-range',
         min_date_allowed=dt(2010, 1, 1),
@@ -48,17 +48,18 @@ layout = html.Div(children=[
         end_date=dt(2019, 8, 25)
     )],style={ 'width': '25%','float': 'left', 'display': 'inline-block',"padding-left":"5%"} ),
     
-    html.Div([html.H4("Región"),
+    html.Div([html.H4("Región:"),
         dcc.Dropdown(
                     id='fase-dropdown-rnfs',
                      )],
     style={ 'width': '25%','float': 'left', 'display': 'inline-block',"padding-left":"5%"}),
-    html.Div([html.H4("Entidad"),
+    html.Div([html.H4("Entidad:"),
         dcc.Dropdown(
             id='entidad-dropdown',
         )
     ],style={ 'width': '25%','float': 'left', 'display': 'inline-block',"padding-left":"5%"}),    
     ]),
+    html.Div([],)
 ])
 
 ###############################################################################################
