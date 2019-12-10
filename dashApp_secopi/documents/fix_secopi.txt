@@ -1,0 +1,48 @@
+
+
+psql (10.10 (Ubuntu 10.10-0ubuntu0.18.04.1), server 10.6)
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+final_db=> \d
+               List of relations
+ Schema |        Name        | Type  |  Owner   
+--------+--------------------+-------+----------
+ public | departamentos      | table | postgres
+ public | fix_secopi         | view  | postgres
+ public | multas             | table | postgres
+ public | secopi             | table | postgres
+ public | secopi_prueba_view | view  | postgres
+(5 rows)
+
+final_db=> \d fix_secopi
+                         View "public.fix_secopi"
+             Column             |  Type   | Collation | Nullable | Default 
+--------------------------------+---------+-----------+----------+---------
+ identificacion_del_contratista | text    |           |          | 
+ nombre_de_la_entidad           | text    |           |          | 
+ nit_de_la_entidad              | text    |           |          | 
+ nivel_entidad                  | text    |           |          | 
+ orden_entidad                  | text    |           |          | 
+ municipio_obtencion            | text    |           |          | 
+ municipio_entrega              | text    |           |          | 
+ numero_del_contrato            | text    |           |          | 
+ numero_de_proceso              | text    |           |          | 
+ nom_raz_social_contratista     | text    |           |          | 
+ moneda                         | text    |           |          | 
+ cuantia_contrato               | numeric |           |          | 
+ valor_contrato_con_adiciones   | numeric |           |          | 
+ valor_total_de_adiciones       | numeric |           |          | 
+ sancion                        | text    |           |          | 
+ anno_firma_del_contrato        | date    |           |          | 
+ estado_del_proceso             | text    |           |          | 
+ fecha_de_firma_del_contrato    | date    |           |          | 
+ fecha_ini_ejec_contrato        | date    |           |          | 
+ fecha_fin_ejec_contrato        | date    |           |          | 
+ municipios_ejecucion           | text    |           |          | 
+ departamento_ejecucion         | text    |           |          | 
+ latitud                        | numeric |           |          | 
+ longitud                       | numeric |           |          | 
+ terminado                      | text    |           |          | 
+ departamento_entidad           | text    |           |          | 
+
