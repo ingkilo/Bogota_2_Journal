@@ -1,0 +1,388 @@
+
+
+
+    sql3 = """
+    SELECT departamento_entidad
+	FROM fix_secopi
+    WHERE fecha_de_firma_del_contrato > 'Start_date'
+    AND fecha_de_firma_del_contrato < 'End_date'
+    LIMIT 100;
+    """
+    reemplazo = { 'Start_date' : Start_date.split('T')[0], 'End_date' : End_date.split('T')[0]}
+    #print(my_strtr(sql3, reemplazo))
+
+    #print(sql3_mod)
+    #regions = pd.read_sql(sql3, con=engine)
+    regions = pd.read_sql(my_strtr(sql3, reemplazo), con=engine, parse_dates=('Entry time',))
+    #print(regions.head(10))
+
+
+############################################################def db_consult(query):
+    df = pd.read_sql(query, con=engine)
+    cleaned_df = df.drop(['longitud', 'latitud'], axis=1)
+    states_grouped = cleaned_df.groupby(['state_abbr'], as_index=False).sum()
+    states_grouped['cuantia_contrato'] = states_grouped['cuantia_contrato']/1000000
+    states_grouped['Sales_State'] = states_grouped[['state_abbr', 'cuantia_contrato']].apply(lambda x: 'Contracts for $ {}: {:.2f}'.format(x[0], x[1]), axis=1)
+    states_grouped['latitud'] = df['latitud'].unique()
+    states_grouped['longitud'] = df['longitud'].unique()
+    states_grouped['Coordinate'] = states_grouped[['latitud', 'longitud']].apply(lambda x: 'Coordinate lat {:.2f}, lon {:.2f}'.format(x[0], x[1]), axis=1)
+
+
+
+
+###############################################################################################
+# Callback de lista de regiones disponibles
+###############################################################################################
+@app.callback(Output('department_dropdown', 'options'),
+[Input('date-range', 'start_date'),
+ Input('date-range', 'end_date'),])
+def Update_RegionDropdown(Start_date,End_date):
+    regions=df["departamento_entidad"].unique()
+    
+    return [{'label': i, 'value': i}
+            for i in df["departamento_entidad"].unique()]
+
+
+################################################################################
+# Callback to update the posible values of animal dropdown list
+################################################################################
+@app.callback(
+    Output('department_dropdown', 'value'),
+    [Input('department_dropdown', 'options')])
+def update_RegionDropdown_value(region_seleccionada):
+    """updates the region dropdown value"""
+    return region_seleccionada[0]['value'] 
+
+
+###############################################################################################
+# Callback de lista de entidades disponibles
+###############################################################################################
+@app.callback(
+    Output('entidad-dropdown', 'options'),
+    [Input('department_dropdown', 'value'),])
+#def Update_EntidadDropdown(region='Antioquia'):
+def Update_EntidadDropdown(region):
+    sql4 = """
+    SELECT  nombre_de_la_entidad
+    FROM fix_secopi
+    where departamento_entidad ='{}'
+    limit 100
+    """.format(region)
+    entidades = pd.read_sql(sql4, con=engine)
+    #engine.close()
+    entidades=entidades["nombre_de_la_entidad"].unique()
+    
+    return [{'label': i, 'value': i}
+            for i in entidades]
+
+def update_entidadDropdown_value(entidad_seleccionada):
+    """updates the entidad dropdown value"""
+    return entidad_seleccionada[0]['value'] 
+
+
+cleaned_df = df.drop(['longitud', 'latitud'], axis=1)
+states_grouped = cleaned_df.groupby(['state_abbr'], as_index=False).sum()
+states_grouped['cuantia_contrato'] = states_grouped['cuantia_contrato']/1000000
+states_grouped['Sales_State'] = states_grouped[['state_abbr', 'cuantia_contrato']].apply(lambda x: 'Contracts for $ {}: {:.2f}'.format(x[0], x[1]), axis=1)
+states_grouped['latitud'] = df['latitud'].unique()
+states_grouped['longitud'] = df['longitud'].unique()
+states_grouped['Coordinate'] = states_grouped[['latitud', 'longitud']].apply(lambda x: 'Coordinate lat {:.2f}, lon {:.2f}'.format(x[0], x[1]), axis=1)
+
+
+
+
+and df['fecha_ini_ejec_contrato'] <  datetime.date(end_date,'%Y-%m-%d')
+
+
+    #tmp_colour = df[df['fecha_ini_ejec_contrato'] > datetime.date(start_date,'%Y-%m-%d')]
+    print(tmp_colour.head())
+    #df = pd.read_sql(my_strtr(sql3, reemplazo), con=engine)
+    cleaned_df = tmp_colour.drop(['longitud', 'latitud'], axis=1)
+    states_grouped = cleaned_df.groupby(['state_abbr'], as_index=False).sum()
+    states_grouped['cuantia_contrato'] = states_grouped['cuantia_contrato']/1000000000
+    states_grouped['latitud'] = df['latitud'].unique()
+    states_grouped['longitud'] = df['longitud'].unique()
+    states_grouped['Coordinate'] = states_grouped[['latitud', 'longitud']].apply(lambda x: 'Coordinate lat {:.4f}, lon {:.4f}'.format(x[0], x[1]), axis=1)
+    #print(states_grouped.head())
+    if value == 'Q':
+        tmp_z=states_grouped['cuantia_contrato']
+        tmp_colorbar_title="KM $COP"
+    else:
+        tmp_z=states_grouped['num_contract']
+        tmp_colorbar_title="Quantity"
+
+    return { 
+            'data' : [go.Choroplethmapbox(
+                z = tmp_z,
+                colorbar_title = tmp_colorbar_title,
+                geojson=geojson,
+                locations=states_grouped['state_abbr'],
+                colorscale='Viridis',
+                text=states_grouped['Coordinate'],
+        )],
+            'layout': go.Layout(
+                width=1250,
+                height=700, 
+                mapbox_style="streets",
+                mapbox_accesstoken=token,
+                mapbox_zoom=5,
+                margin={'t': 0, 'l': 0, 'r': 35, 'b': 0},
+                mapbox_center={"lat": 4.6097102, "lon": -74.081749}
+            )
+        }
+
+
+
+
+
+    #reemplazo = { 'Start_date' : start_date.split('T')[0], 'End_date' : end_date.split('T')[0]}
+    #sql3 = """
+    #SELECT *
+    #FROM color_cuantia
+    #WHERE fecha_ini_ejec_contrato > 'Start_date' 
+    #AND fecha_ini_ejec_contrato < 'End_date'
+    #;
+    #"""
+    #day = dt.date(start_date,'%Y-%m-%d')
+    #print(df['fecha_ini_ejec_contrato'].head())
+    #print(day)
+
+################################################################################
+# Callback to update contract classification
+################################################################################
+
+@app.callback(
+    dash.dependencies.Output('classifier_select', 'value'),
+    [dash.dependencies.Input('classifier_select', 'options')])
+def set_cities_value(available_options):
+    return available_options[0]['value']
+
+
+
+166,206,227
+
+
+178,223,138
+
+
+
+
+
+                colorscale=[[0, "rgb(166,206,227)"],
+                            #[1./10000, "rgb(31,120,180)"],
+                            [1./1000, "rgb(178,223,138)"],
+                            [1./100, "rgb(51,160,44)"],
+                            [1./10, "rgb( 192, 57, 43)"],
+                            [1, "rgb(100, 30, 22)"]],
+
+
+
+
+                colorscale=[[0, "rgb( 125, 102, 8 )"],
+                            #[1./10000, "rgb( 241, 196, 15 )"],
+                            [1./1000, "rgb(166,206,227)"],
+                            [1./100, "rgb(31,120,180)"],
+                            [1./10, "rgb( 178,223,138)"],
+                            [1, "rgb(51,160,44)"]],
+
+
+
+
+@app.callback(Output("total-quantity", "children"), 
+            [Input("date-picker", "date")])
+def update_total_rides(datePicked):
+    date_picked = dt.strptime(datePicked, "%Y-%m-%d")
+    return "Total Number of rides: {:,d}".format(
+        len(totalList[date_picked.month - 4][date_picked.day - 1])
+    )
+
+
+f'{total_quantity:0.4}%'
+
+
+
+                                html.H4(
+                                    " contract's classifier",
+                                    title="Choose how you want to see the data classified "
+                                    #"and measure current or source current and "
+                                    #"measure voltage",
+                                ),
+
+
+
+
+
+
+
+                                ############## region ####################
+                                html.Div(
+                                    className="div-for-dropdown",
+                                    children=[
+                                        html.H4("Department:"),
+                                        # Dropdown for locations a region on map
+                                        dcc.Dropdown(
+                                            id="department_dropdown",
+                                            #multi=True,
+                                            options = [{'label': i, 'value': i}
+                                            for i in df["departamento_entidad"].unique()],                                            
+                                            placeholder="Select a department",
+                                        )],
+                                    ),
+                                ############## Entidad ####################
+                                html.Div(
+                                    className="div-for-dropdown",
+                                    children=[
+                                        html.H4("Entity:"),
+                                        # Dropdown to select Entity
+                                        dcc.Dropdown(
+                                            id="entidad-dropdown",
+                                            multi=True,
+                                            placeholder="Select a entity",
+                                        )
+                                    ],
+                                ),
+
+
+
+
+
+################################################################################
+# Callback to update the posible values of animal dropdown list
+################################################################################
+
+@app.callback(
+    Output('department_dropdown', 'value'),
+    [Input('department_dropdown', 'options')])
+def update_RegionDropdown_value(region_seleccionada):
+    """updates the region dropdown value"""
+    return region_seleccionada[0]['value'] 
+
+
+###############################################################################################
+# Callback de lista de entidades disponibles
+###############################################################################################
+
+@app.callback(
+    Output('entidad-dropdown', 'options'),
+    [Input('department_dropdown', 'value'),])
+#def Update_EntidadDropdown(region='Antioquia'):
+def Update_EntidadDropdown(region):
+    sql4 = """
+    SELECT  nombre_de_la_entidad
+    FROM fix_secopi
+    where departamento_entidad ='{}'
+    limit 100
+    """.format(region)
+    entidades = pd.read_sql(sql4, con=engine)
+    #engine.close()
+    entidades=entidades["nombre_de_la_entidad"].unique()
+    
+    return [{'label': i, 'value': i}
+            for i in entidades]
+
+def update_entidadDropdown_value(entidad_seleccionada):
+    """updates the entidad dropdown value"""
+    return entidad_seleccionada[0]['value'] 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        html.Div([
+                            html.H4("Date range"),
+                            #className="div-for-dropdown",
+                            #children=[
+                                dcc.DatePickerRange(
+                                    id='date-range',
+                                    min_date_allowed = dt(2013,1,1),
+                                    max_date_allowed = dt(2019,12,31),
+                                    start_date =df['fecha_ini_ejec_contrato'].min(),
+                                    display_format= 'DD MMM YYYY', 
+                                    end_date=df['fecha_ini_ejec_contrato'].max(),
+                                    #calendar_orientation='vertical',
+                                )],
+                            #],
+                        ),
+                        # Change to side-by-side for mobile layout
+                        html.Div(
+                            className="row",
+                            children=[
+                                ############## selector draw ############
+
+                                dcc.RadioItems(
+                                    id="classifier_select",
+                                    options=[
+                                        {"label": "Quantity", "value": "Q"},
+                                        {"label": "Number", "value": "N"},
+                                        {"label": "Penalities", "value": "P"},
+                                    ],
+                                    #value='Q',
+                                    labelStyle={'display': 'inline-block', 'margin': '12px'}
+                                ),
+
+
+
+
+
+                        html.Div(
+                            className="twelve columns card",
+                            children=[
+                                html.Div(
+                                    className="padding row",
+                                    children=[
+                                        # Leverage Selector
+                                        html.Div(
+                                            className="three columns card",
+                                            children=[
+                                                html.H6("Select a Date Range"),
+                                                dcc.DatePickerRange(
+                                                    id='date-range',
+                                                    min_date_allowed = dt(2013,1,1),
+                                                    max_date_allowed = dt(2019,12,31),
+                                                    start_date =df['fecha_ini_ejec_contrato'].min(),
+                                                    display_format= 'DD MMM YYYY', 
+                                                    end_date=df['fecha_ini_ejec_contrato'].max(),
+                                                ),]
+                                            ),
+
+
+                                        html.Div(
+                                            className="two columns card",
+                                            children=[
+                                                html.H6("Select Leverage"),
+                                                dcc.RadioItems(
+                                                    id="classifier_select",
+                                                    options=[
+                                                        {"label": "Quantity", "value": "Q"},
+                                                        {"label": "Number", "value": "N"},
+                                                        {"label": "Penalities", "value": "P"},
+                                                    ],
+                                                    #value='Q',
+                                                    labelStyle={'display': 'inline-block', 'margin': '12px'}
+                                                ),]
+                                            ),
+                                    ]
+                            )
+                    ]),
+
+
+
+SELECT *
+        FROM contratos_entidad
+    WHERE fecha_ini_ejec_contrato > '2019-01-01'
+    AND departamento_entidad == Antioquia
+
+
+
+
