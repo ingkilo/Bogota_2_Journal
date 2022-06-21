@@ -64,7 +64,7 @@ netifaces==0.10.9
 nltk==3.4.5
 notebook==6.0.1
 numba==0.46.0
-numpy==1.17.3
+numpy==1.22.0
 olefile==0.46
 packaging==19.2
 pandas==0.25.2
